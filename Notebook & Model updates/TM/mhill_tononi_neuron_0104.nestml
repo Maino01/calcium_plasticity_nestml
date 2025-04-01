@@ -35,15 +35,9 @@ neuron mhill_tononi_neuron:
         N_rel real = 1   # available neurotransmitter 
         A_NMDA real = 0
         B_NMDA real = 0 
-        kappa real = 0
-        pappetta real = 0
-        cap real = 0
-        pappa real = 0
         Use_TM real = 0.5
-        NNREL real = 0
 
     equations:
-        recordable inline weightrecord real = convolve(identity, weight)
         #recordable inline diracampa real = convolve(dirac, AMPA) * (N_rel / (Nrrp * normalisation_factor_AMPA)) + 1
         #recordable inline diracnmda real = convolve(dirac, NMDA) * (N_rel / (Nrrp * normalisation_factor_NMDA)) + 1
        # A and B AMPA
@@ -137,7 +131,6 @@ neuron mhill_tononi_neuron:
          #      g_NMDA$' = -g_NMDA$ / NMDA_Tau_1
                
         kernel g_exc = (e/tau_syn_exc) * t * exp(-t/tau_syn_exc)
-        kernel identity = 1   
         kernel dirac = delta(t)
 
     parameters:
@@ -215,7 +208,6 @@ neuron mhill_tononi_neuron:
         
         tau_exp_GB s = 100 s
         Nrrp real = 1
-        released real = 1
 
     internals:
        # Inline calculations for each synapse
@@ -314,7 +306,6 @@ neuron mhill_tononi_neuron:
                r = RefractoryCounts
                g_spike = true
                emit_spike()
-       pappa = weightrecord  
 
     function Hfun(cStel real, th real) real:
         if cStel > th:
